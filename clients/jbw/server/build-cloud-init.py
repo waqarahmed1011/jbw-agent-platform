@@ -1,9 +1,12 @@
 """Builds cloud-init.yaml: one file to paste into Hetzner's "Cloud config" box.
 
-Embeds the theme (shrunk icon), setup.sh and add-telegram.sh. Run: python3 server/build-cloud-init.py
+Embeds the theme (shrunk icon), setup.sh and add-telegram.sh. Run: python3 server/build-cloud-init.py                 (template with placeholder emails)
+     OPERATOR_EMAIL=.. DAD_EMAIL=.. ADMIN_EMAIL=.. python3 server/build-cloud-init.py /path/outside/repo.yaml
 """
 import base64
 import io
+import os
+import sys
 from pathlib import Path
 
 from PIL import Image
@@ -24,9 +27,9 @@ def block(text: str, indent: int = 6) -> str:
 files = [
     ("/opt/jbw/settings.env", "0600", None, (
         "# EDIT THESE THREE LINES before pasting (emails only, never passwords or keys)\n"
-        "OPERATOR_EMAIL=you@example.com\n"
-        "DAD_EMAIL=dad@example.com\n"
-        "ADMIN_EMAIL=office@example.com\n"
+        f"OPERATOR_EMAIL={os.environ.get('OPERATOR_EMAIL', 'you@example.com')}\n"
+        f"DAD_EMAIL={os.environ.get('DAD_EMAIL', 'dad@example.com')}\n"
+        f"ADMIN_EMAIL={os.environ.get('ADMIN_EMAIL', 'office@example.com')}\n"
     )),
     ("/opt/jbw/theme/theme.json", "0644", None, (client / "theme" / "theme.json").read_text()),
     ("/opt/jbw/theme/icon.png", "0644", base64.b64encode(buf.getvalue()).decode(), None),
@@ -42,6 +45,7 @@ for path, mode, b64, text in files:
     else:
         out += ["    content: |", block(text)]
 out += ["runcmd:", "  - [bash, /opt/jbw/setup.sh]", ""]
-target = here / "cloud-init.yaml"
+# A filled-in copy holds real emails: write it outside the repo (this repo is public).
+target = Path(sys.argv[1]) if len(sys.argv) > 1 else here / "cloud-init.yaml"
 target.write_text("\n".join(out))
 print(f"{target} {target.stat().st_size} bytes (Hetzner limit 32768)")

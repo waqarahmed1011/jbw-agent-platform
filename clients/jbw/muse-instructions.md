@@ -44,8 +44,8 @@ on public-repo minutes (free). If the Actions tab gets noisy, disable the ones y
 
 ## Task 2: Create the server on Hetzner (about 15 min + 15 min of waiting)
 
-Before this task: open `server/cloud-init.yaml` and replace the three emails at the top
-(`OPERATOR_EMAIL`, `DAD_EMAIL`, `ADMIN_EMAIL`) with the real ones. Emails only.
+Before this task: use the filled-in cloud-init file I give you (it has the three account
+emails already). Don't use the copy in the repo; that one only has placeholder emails.
 
 ```
 Goal: create one server that installs the JBW platform by itself.
@@ -182,8 +182,8 @@ C. Sign out. Sign in as the OFFICE ADMIN.
    1. Change the password; save it. Open both invite links meant for the admin and Join.
    2. Settings, Models: same Gemini key. Settings, Approvals: Ask.
    3. In the BTG Construction space, Settings, Integrations: connect Gmail, Google Calendar
-      and Google Drive/Sheets using the OFFICE Google account. If Google asks to approve
-      access for the domain, STOP and ask me (I'm the Workspace admin).
+      and Google Drive/Sheets using BTG's office Gmail account (the same email as this
+      admin account). If Google shows an "unverified app" or extra consent screen, STOP and ask me.
    4. Create the routines listed in bot-roster.md for Inbox (every 30 min, weekdays 7 AM
       to 6 PM) under this account. Do NOT turn on Paperwork's routines yet.
 

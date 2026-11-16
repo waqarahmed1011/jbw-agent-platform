@@ -16,7 +16,7 @@ Rules for every bot:
 
 Who owns what (matters because a bot uses the accounts of whoever runs it):
 
-- **Office admin's account** connects the office Gmail, Google Calendar and Drive in the BTG space, and owns the Inbox, Scheduler and Paperwork routines. Approval cards from those go to the admin.
+- **Office admin's account** connects BTG's Gmail (the BTG office Gmail account), its Google Calendar and Drive in the BTG space, and owns the Inbox, Scheduler and Paperwork routines. Approval cards from those go to the admin.
 - **Dad's account** talks to Chief (Telegram, voice notes, app). Approvals from his requests go to him.
 
 ---

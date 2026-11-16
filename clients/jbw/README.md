@@ -7,7 +7,7 @@ Not one of the 3 paid pilots in the business plan.
 |---|---|
 | Companies | JBW Engineering (civil/structural, pre-launch for IDOT work), BTG Construction (GC, operating) |
 | Size | 5 to 15 people. Users: Dad + office admin |
-| Email/docs | Google Workspace (operator is admin) |
+| Email | BTG works out of a Gmail account (connected to the Inbox bot). Company domains jbwinc.com and btgconstructioninc.com are on Spacemail, which the platform can't connect to directly yet |
 | First workflows | 1. Email + scheduling, 2. Project paperwork (both measured on BTG) |
 | Platform | Branded Rakazo fork, one instance, 2 spaces (BTG Construction, JBW Engineering) |
 | URL | `https://jbw.<server-ip-dashed>.sslip.io` until a real domain is set |
