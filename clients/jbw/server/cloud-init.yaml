@@ -1,0 +1,156 @@
+#cloud-config
+write_files:
+  - path: /opt/jbw/settings.env
+    permissions: '0600'
+    content: |
+      # EDIT THESE THREE LINES before pasting (emails only, never passwords or keys)
+      OPERATOR_EMAIL=you@example.com
+      DAD_EMAIL=dad@example.com
+      ADMIN_EMAIL=office@example.com
+  - path: /opt/jbw/theme/theme.json
+    permissions: '0644'
+    content: |
+      {
+        "name": "JBW",
+        "icon": "icon.png",
+        "light": {
+          "primary": "#1A3852",
+          "primaryHover": "#24486A",
+          "primaryForeground": "#FFFFFF"
+        },
+        "dark": {
+          "primary": "#F09A3A",
+          "primaryHover": "#F3AD5E",
+          "primaryForeground": "#1A3852"
+        }
+      }
+  - path: /opt/jbw/theme/icon.png
+    permissions: '0644'
+    encoding: b64
+    content: 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
+  - path: /opt/jbw/setup.sh
+    permissions: '0700'
+    content: |
+      #!/usr/bin/env bash
+      # Sets up the JBW agent platform on a fresh Hetzner Ubuntu 24.04 server.
+      # Runs once from cloud-init as root. Log: /var/log/jbw-setup.log
+      # Result: https://jbw.<server-ip-with-dashes>.sslip.io, accounts in /root/jbw-accounts.txt
+      set -euo pipefail
+      exec > >(tee -a /var/log/jbw-setup.log) 2>&1
+
+      # Filled in before pasting (see settings.env in cloud-init.yaml).
+      # shellcheck disable=SC1091
+      source /opt/jbw/settings.env
+      : "${OPERATOR_EMAIL:?}" "${DAD_EMAIL:?}" "${ADMIN_EMAIL:?}"
+
+      FORK_RAW="https://raw.githubusercontent.com/waqarahmed1011/rakazo/claude/loving-ride-r8uxm7/infra/compose"
+      APP_IMAGE="ghcr.io/waqarahmed1011/rakazo/app"
+      APP_TAG="clients"
+
+      IP=$(curl -fsS http://169.254.169.254/hetzner/v1/metadata/public-ipv4)
+      HOST="jbw.${IP//./-}.sslip.io"
+      echo "Setting up ${HOST}"
+
+      export DEBIAN_FRONTEND=noninteractive
+      apt-get update -q
+      apt-get install -y -q caddy ufw unattended-upgrades openssl
+      curl -fsSL https://get.docker.com | sh
+
+      ufw allow OpenSSH
+      ufw allow 80/tcp
+      ufw allow 443
+      ufw --force enable
+
+      mkdir -p /opt/jbw/rakazo
+      cd /opt/jbw/rakazo
+      cp -r /opt/jbw/theme ./theme
+      cat > docker-compose.override.yml <<'YAML'
+      services:
+        web:
+          volumes:
+            - ./theme:/theme:ro
+      YAML
+
+      export RAKAZO_DOWNLOAD_BASE="$FORK_RAW"
+      curl -fsSLO "$FORK_RAW/install-images.sh"
+      bash install-images.sh --prepare-only
+
+      set_env() {
+        local key=$1 value=$2
+        if grep -qE "^[#[:space:]]*${key}=" .env; then
+          sed -i -E "s|^[#[:space:]]*${key}=.*|${key}=${value}|" .env
+        else
+          echo "${key}=${value}" >> .env
+        fi
+      }
+
+      # Use the JBW fork image; fall back to upstream if the fork image hasn't been published yet.
+      if docker manifest inspect "${APP_IMAGE}:${APP_TAG}" > /dev/null 2>&1; then
+        set_env RAKAZO_IMAGE "$APP_IMAGE"
+        set_env RAKAZO_IMAGE_TAG "$APP_TAG"
+      else
+        echo "WARNING: ${APP_IMAGE}:${APP_TAG} not found, using upstream image (colors only, no JBW name/icon)."
+      fi
+      set_env RAKAZO_HOST "$HOST"
+      set_env BETTER_AUTH_URL "https://${HOST}"
+      set_env WEB_ORIGIN "https://${HOST}"
+      set_env API_URL "https://${HOST}"
+      set_env SIGNUPS_ENABLED false
+      set_env RAKAZO_THEME /theme/theme.json
+
+      bash install-images.sh
+
+      cat > /etc/caddy/Caddyfile <<CADDY
+      ${HOST} {
+        reverse_proxy 127.0.0.1:5173
+      }
+      CADDY
+      systemctl reload caddy || systemctl restart caddy
+
+      # Accounts: one per person, random first password, changed on first sign-in.
+      compose=(docker compose --env-file .env -f docker-compose.images.yml -f docker-compose.override.yml)
+      umask 077
+      {
+        echo "JBW platform: https://${HOST}"
+        echo "Change each password after the first sign-in (Settings, Account)."
+        echo
+      } > /root/jbw-accounts.txt
+      for OWNER_EMAIL in "$OPERATOR_EMAIL" "$DAD_EMAIL" "$ADMIN_EMAIL"; do
+        OWNER_PASSWORD=$(openssl rand -base64 24 | tr -d '/+=' | cut -c1-24)
+        export OWNER_EMAIL OWNER_PASSWORD
+        "${compose[@]}" exec -T -e OWNER_EMAIL -e OWNER_PASSWORD api node dist/cli/bootstrap-owner.js
+        echo "${OWNER_EMAIL}  ${OWNER_PASSWORD}" >> /root/jbw-accounts.txt
+        unset OWNER_EMAIL OWNER_PASSWORD
+      done
+
+      echo "https://${HOST}" > /root/jbw-url.txt
+      echo "DONE: https://${HOST}"
+  - path: /opt/jbw/add-telegram.sh
+    permissions: '0700'
+    content: |
+      #!/usr/bin/env bash
+      # Adds the Telegram bot token to the server without it ever appearing on screen or in chat.
+      # Run in the Hetzner web console as root:  bash /opt/jbw/add-telegram.sh
+      set -euo pipefail
+      cd /opt/jbw/rakazo
+
+      read -r -s -p "Paste the Telegram bot token, then press Enter: " TOKEN
+      echo
+      [[ "$TOKEN" =~ ^[0-9]+:[A-Za-z0-9_-]+$ ]] || { echo "That doesn't look like a BotFather token."; exit 1; }
+
+      set_env() {
+        local key=$1 value=$2
+        if grep -qE "^[#[:space:]]*${key}=" .env; then
+          sed -i -E "s|^[#[:space:]]*${key}=.*|${key}=${value}|" .env
+        else
+          echo "${key}=${value}" >> .env
+        fi
+      }
+      set_env TELEGRAM_BOT_TOKEN "$TOKEN"
+      set_env TELEGRAM_WEBHOOK_SECRET_TOKEN "$(openssl rand -hex 32)"
+      unset TOKEN
+
+      bash install-images.sh
+      echo "Telegram added. In the app: Settings, Messaging, pick a bot, Connect a chat app, telegram."
+runcmd:
+  - [bash, /opt/jbw/setup.sh]

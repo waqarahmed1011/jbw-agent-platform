@@ -1,0 +1,14 @@
+{
+  "name": "JBW",
+  "icon": "icon.png",
+  "light": {
+    "primary": "#1A3852",
+    "primaryHover": "#24486A",
+    "primaryForeground": "#FFFFFF"
+  },
+  "dark": {
+    "primary": "#F09A3A",
+    "primaryHover": "#F3AD5E",
+    "primaryForeground": "#1A3852"
+  }
+}
