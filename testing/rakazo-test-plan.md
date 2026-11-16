@@ -9,24 +9,26 @@ Upstream: https://github.com/elie222/rakazo (version tested: 0.12.0, Nov 16 2026
 
 ---
 
-## 0. Deploy on Railway
+## 0. Sign up for the hosted app (app.rakazo.com)
 
-1. Create a new Railway workspace just for this (keeps the sandbox computers away from anything else).
-   Hobby plan is fine for testing.
-2. In that workspace, go to Account Settings, then Tokens, and create a workspace token.
-3. Open https://railway.com/new/template/rakazo-template
-   - `OWNER_EMAIL`: your email
-   - `RAILWAY_API_TOKEN`: the token from step 2 (it lets Rakazo create the bot computers)
-4. Deploy and wait until the service shows healthy. Open the generated HTTPS domain.
-5. Sign in with your email and the `OWNER_PASSWORD` from the Rakazo service's Variables tab.
-   Change the password right away in account settings.
+Why not Railway: the Trial plan caps memory at 1 GB and Rakazo needs 4 to 8 GB, so the deploy kept
+crashing (exit 137 means the container was killed for running out of memory). The Railway project
+"giving-upliftment" is still there, unused.
 
-Do not turn on service sleeping and keep it at one replica (per the Rakazo docs).
+The hosted app is **not free**: Standard is $15/mo with a **7-day free trial** that includes
+**10 bot computer hours**. Plan to finish the tests inside the 7 days.
+
+1. Go to https://app.rakazo.com, create an account and start the **Standard** trial.
+2. Set a calendar reminder for **day 6** to cancel in Settings, then Billing, if you aren't continuing.
+3. Use fake data only (fake companies, a throwaway Gmail). This is Rakazo's server, not yours.
+
+Computer hours (10 total): tests C and D use a bot computer. A, B, E and F mostly don't.
+Do C and D last and stop any run that loops.
 
 | Check | Result |
 |---|---|
-| Deployed and healthy | |
-| Time from click to first sign-in | |
+| Trial started (date) | |
+| Cancel reminder set for | |
 
 ## 1. Connect a model
 
@@ -91,6 +93,9 @@ Watch for bots talking in circles. Stop it if it runs more than 10 minutes.
 | | | | |
 
 ### E. Client isolation (this decides how you host clients)
+On the hosted app this only shows how spaces keep things apart inside Rakazo's product. It proves
+nothing about a self-hosted setup; we check that again when we self-host.
+
 Create two spaces: "Client A Plumbing" and "Client B Dental". In A, tell a bot a fake secret fact
 ("our gate code is 4471") and connect an integration. In B, ask a bot what the gate code is and
 check whether A's integration or computer logins show up.
