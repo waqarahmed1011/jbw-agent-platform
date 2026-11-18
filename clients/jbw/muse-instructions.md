@@ -42,7 +42,7 @@ on public-repo minutes (free). If the Actions tab gets noisy, disable the ones y
 
 ---
 
-## Task 2: Create the server on Hetzner (about 15 min + 15 min of waiting)
+## Task 2: Create the server (done on Contabo) (about 15 min + 15 min of waiting)
 
 Before this task: use the filled-in cloud-init file I give you (it has the three account
 emails already). Don't use the copy in the repo; that one only has placeholder emails.
@@ -116,33 +116,36 @@ Rules: ask me before paying. Never put the key in chat, notes or email.
 
 ---
 
-## Task 5: Telegram bot for Dad (about 10 min)
+## Task 5: Update the server to the new JBW version (about 10 min)
+
+Before this task: the "fork-image" run for the latest commit must be green
+(https://github.com/waqarahmed1011/rakazo/actions/workflows/fork-image.yml).
 
 ```
-Goal: a Telegram bot Dad can text and send voice notes to.
+Goal: the server runs the new JBW version: JBW name everywhere, phone notifications, view-only members.
 
-1. Open Telegram (web.telegram.org) signed in as me, and start a chat with @BotFather.
-2. Send /newbot. Name: "JBW Chief". Username: something like "jbw_chief_bot"
-   (it must end in "bot"; try variants if taken).
-3. BotFather replies with a token. Don't copy it anywhere except the next step.
-4. In the Hetzner Console (as in Task 3), type:  bash /opt/jbw/add-telegram.sh
-   When it asks, paste the token and press Enter. (Nothing shows while pasting; that's normal.)
-5. Wait for "Telegram added."
+1. Open the server's web console in the Contabo control panel (VNC / console) and log in as root.
+2. Type this one line and press Enter:
+   curl -fsSL https://raw.githubusercontent.com/waqarahmed1011/jbw-agent-platform/claude/loving-ride-r8uxm7/clients/jbw/server/update-server.sh | bash
+3. Wait until it prints "Updated:" (about 5 minutes). If it prints "STOP:", copy that line exactly.
+4. Open the platform URL, reload, and sign in. The page title says JBW and the account menu
+   has no "Get the mobile app" item.
 
-Report back: the bot's @username, and "Telegram added" (not the token).
-Rules: never put the token in chat, notes or email. If a page looks different, stop and tell me.
+Report back: "Server updated" or the STOP line / last 5 lines on screen (they contain no secrets).
+Rules: never put secrets in chat, notes or email. If a page looks different, stop and tell me.
 ```
 
 ---
 
-## Task 6: OpenAI key for voice notes (about 5 min)
+## Task 6: OpenAI key for voice (about 5 min)
 
 ```
-Goal: an API key so the platform can transcribe Dad's voice notes (costs about $0.006 a minute).
+Goal: an API key so the app can turn speech into text, read replies aloud and take calls
+(about $0.003 a minute to listen, about $0.015 a minute to speak).
 
 1. Go to https://platform.openai.com/api-keys signed in as me.
 2. If there's no billing set up, STOP and ask me before adding a card.
-3. Create a key named "jbw-voice". Keep it on screen for Task 7.
+3. Create a key named "jbw-voice". Keep it on screen for Task 8.
 
 Report back: "Voice key created" (not the key).
 Rules: ask me before paying. Never put the key in chat, notes or email.
@@ -150,7 +153,26 @@ Rules: ask me before paying. Never put the key in chat, notes or email.
 
 ---
 
-## Task 7: Set up the platform (about 45 min)
+## Task 7: Composio key for Gmail, Calendar and Drive (about 10 min)
+
+```
+Goal: let the platform connect Google accounts through Composio, which is already approved by
+Google (our own Google app would log everyone out every 7 days).
+
+1. Go to https://composio.dev and sign up with my email. Choose the free plan.
+   If it asks for a card or a paid plan, STOP and ask me.
+2. In the Composio dashboard, open Settings, API Keys, and create a key named "jbw-platform".
+3. In the server console (as in Task 5), type:  bash /opt/jbw/add-composio.sh
+   Paste the key when asked and press Enter (nothing shows while pasting; that's normal).
+4. Wait for "Composio added."
+
+Report back: "Composio added" (not the key).
+Rules: ask me before paying. Never put the key in chat, notes or email.
+```
+
+---
+
+## Task 8: Set up the platform (about 45 min)
 
 ```
 Goal: spaces, models, approvals and accounts set up in the JBW platform.
@@ -174,20 +196,24 @@ B. Sign out. Sign in as DAD.
    1. Change his password; save it. Open both invite links meant for Dad and click Join.
    2. Settings, Models: add the same Gemini key. Settings, Approvals: Ask.
    3. Settings, Voice: provider OpenAI, paste the voice key from Task 6.
-   4. Settings, Messaging: pick bot "Chief" (BTG), Connect a chat app, telegram.
-      Telegram shows a code: STOP here and ask me to have Dad send that code to the
-      Telegram bot from his phone within 10 minutes.
 
 C. Sign out. Sign in as the OFFICE ADMIN.
    1. Change the password; save it. Open both invite links meant for the admin and Join.
    2. Settings, Models: same Gemini key. Settings, Approvals: Ask.
-   3. In the BTG Construction space, Settings, Integrations: connect Gmail, Google Calendar
-      and Google Drive/Sheets using BTG's office Gmail account (the same email as this
-      admin account). If Google shows an "unverified app" or extra consent screen, STOP and ask me.
+   3. In the BTG Construction space, open Integrations (the "Connect apps" button): connect
+      Gmail, Google Calendar and Google Drive with BTG's office Gmail account (the same email
+      as this admin account). Google shows a Composio sign-in screen; that is expected. If
+      Google shows an "unverified app" warning, STOP and ask me.
+      If an earlier Google Calendar entry shows "Needs an OAuth client ID", open it and
+      click Remove, then connect Calendar again.
    4. Create the routines listed in bot-roster.md for Inbox (every 30 min, weekdays 7 AM
       to 6 PM) under this account. Do NOT turn on Paperwork's routines yet.
 
-Report back: a checklist of A1 to C4 with done / stopped-for-you / failed, plus anything that
+D. Sign in as ME again. In each space, Settings, Members: nobody needs view-only today, so
+   leave everyone as they are. (Use "Make view-only" on a person later for anyone who should
+   read and chat but not change bots, memory or routines.)
+
+Report back: a checklist of A1 to D with done / stopped-for-you / failed, plus anything that
 looked different from these steps.
 Rules: ask me before paying. Secrets go only into the field where they're used, never into
 chat, notes or email. If a page looks different, stop and tell me what you see.
@@ -195,7 +221,36 @@ chat, notes or email. If a page looks different, stop and tell me what you see.
 
 ---
 
-## Task 8: Baseline reminders (5 working days, starts BEFORE the bots go live)
+## Task 9: Put the app on Dad's and the admin's phones (about 10 min per phone, with them)
+
+```
+Goal: the JBW app is an icon on each phone and approvals arrive as notifications.
+This needs the person and their phone: STOP and ask me to set up a time with them first.
+
+iPhone (Safari only; Chrome on iPhone can't install it):
+1. Open the platform URL in Safari and sign in.
+2. Tap Share, then "Add to Home Screen", then Add. Open JBW from the new home screen icon.
+3. Send any message to Chief. When the phone asks to allow notifications, tap Allow.
+   (iPhone only shows notifications for the icon version, not the Safari tab.)
+
+Android (Chrome):
+1. Open the platform URL in Chrome and sign in.
+2. Tap the menu (three dots), then "Add to Home screen" or "Install app".
+3. Open JBW from the icon, send any message to Chief, and tap Allow for notifications.
+
+Test on each phone: close the app, then from a computer signed in as that person ask Chief
+"read https://idot.illinois.gov and summarize it in one line". Reading a website needs approval
+in Ask mode, so an approval notification should arrive on the phone.
+- Android: it has Approve and Deny buttons. Tap Deny.
+- iPhone: tap the notification; the app opens on the approval card. Tap Deny.
+
+Report back: per phone, "installed / notification arrived / buttons or tap worked", or what failed.
+Rules: never send anything to anyone without my OK. If a screen looks different, stop and tell me.
+```
+
+---
+
+## Task 10: Baseline reminders (5 working days, starts BEFORE the bots go live)
 
 ```
 Goal: get 5 days of "before" numbers from the office admin.
@@ -212,4 +267,4 @@ Report back: daily, "Day N logged / not logged".
 Rules: never send anything to anyone without my OK.
 ```
 
-Turn on Inbox's routine only after Task 8 has 5 full days.
+Turn on Inbox's routine only after Task 10 has 5 full days.

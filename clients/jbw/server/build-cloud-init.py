@@ -1,6 +1,6 @@
-"""Builds cloud-init.yaml: one file to paste into Hetzner's "Cloud config" box.
+"""Builds cloud-init.yaml: one file to paste into the server provider's cloud-init / user data box.
 
-Embeds the theme (shrunk icon), setup.sh and add-telegram.sh. Run: python3 server/build-cloud-init.py                 (template with placeholder emails)
+Embeds the theme (shrunk icon), setup.sh, lib-env.sh and add-composio.sh. Run: python3 server/build-cloud-init.py                 (template with placeholder emails)
      OPERATOR_EMAIL=.. DAD_EMAIL=.. ADMIN_EMAIL=.. python3 server/build-cloud-init.py /path/outside/repo.yaml
 """
 import base64
@@ -34,7 +34,8 @@ files = [
     ("/opt/jbw/theme/theme.json", "0644", None, (client / "theme" / "theme.json").read_text()),
     ("/opt/jbw/theme/icon.png", "0644", base64.b64encode(buf.getvalue()).decode(), None),
     ("/opt/jbw/setup.sh", "0700", None, (here / "setup.sh").read_text()),
-    ("/opt/jbw/add-telegram.sh", "0700", None, (here / "add-telegram.sh").read_text()),
+    ("/opt/jbw/lib-env.sh", "0644", None, (here / "lib-env.sh").read_text()),
+    ("/opt/jbw/add-composio.sh", "0700", None, (here / "add-composio.sh").read_text()),
 ]
 
 out = ["#cloud-config", "write_files:"]
@@ -48,4 +49,4 @@ out += ["runcmd:", "  - [bash, /opt/jbw/setup.sh]", ""]
 # A filled-in copy holds real emails: write it outside the repo (this repo is public).
 target = Path(sys.argv[1]) if len(sys.argv) > 1 else here / "cloud-init.yaml"
 target.write_text("\n".join(out))
-print(f"{target} {target.stat().st_size} bytes (Hetzner limit 32768)")
+print(f"{target} {target.stat().st_size} bytes (cloud-init user data limit 32768)")

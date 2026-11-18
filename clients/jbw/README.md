@@ -11,7 +11,7 @@ Not one of the 3 paid pilots in the business plan.
 | First workflows | 1. Email + scheduling, 2. Project paperwork (both measured on BTG) |
 | Platform | Branded Rakazo fork, one instance, 2 spaces (BTG Construction, JBW Engineering) |
 | URL | `https://jbw.<server-ip-dashed>.sslip.io` until a real domain is set |
-| Channels | Telegram (text + voice notes), email, web app (installable on phones) |
+| Channels | Installed web app (home screen icon, push approvals, voice), email |
 | Models | Gemini Flash (workers, approvals) + Gemini Pro (Chief), paid tier. Claude later |
 
 ## Files
@@ -19,8 +19,9 @@ Not one of the 3 paid pilots in the business plan.
 | File | What it is |
 |---|---|
 | [muse-instructions.md](muse-instructions.md) | Step-by-step tasks for Meta Muse to do the setup |
-| [server/cloud-init.yaml](server/cloud-init.yaml) | Paste into Hetzner's "Cloud config" box. Edit the 3 emails first |
-| [server/setup.sh](server/setup.sh), [server/add-telegram.sh](server/add-telegram.sh) | What cloud-init runs (already embedded in cloud-init.yaml) |
+| [server/cloud-init.yaml](server/cloud-init.yaml) | Paste into a new server's cloud-init / user data box. Edit the 3 emails first |
+| [server/setup.sh](server/setup.sh), [server/lib-env.sh](server/lib-env.sh), [server/add-composio.sh](server/add-composio.sh) | What cloud-init runs (already embedded in cloud-init.yaml) |
+| [server/update-server.sh](server/update-server.sh) | Moves a running server to the latest JBW image and settings |
 | [server/build-cloud-init.py](server/build-cloud-init.py) | Rebuilds cloud-init.yaml after editing the scripts or theme |
 | [theme/](theme/) | JBW name, icon and colors (navy #1A3852, orange #F09A3A) |
 | [bot-roster.md](bot-roster.md) | Every bot's instructions, model and routine |
@@ -31,25 +32,29 @@ Not one of the 3 paid pilots in the business plan.
 
 | Item | Cost |
 |---|---|
-| Hetzner CPX42, Helsinki, + backups | about €36 + €7 (about $47) |
+| Contabo Cloud VPS 4 (live server) | per the Contabo invoice |
 | Gemini API | $10 to $40, depending on email volume |
-| OpenAI voice transcription | under $5 |
-| Telegram | free |
-| **Total** | **about $60 to $90/mo** |
+| OpenAI voice (talk to type, spoken replies, calls) | about $3 to $8 |
+| Composio (Google connections) | free tier |
+| **Total** | **server plus about $15 to $50/mo** |
 
 ## What's verified and what isn't
 
-Verified here: the JBW theme (name, icon, colors) renders on the sign-in page in light and dark
-mode, the theme tests pass, and the type check and repo checks pass after merging upstream.
+Verified locally against the full app (API, worker, web, Postgres) with a scripted test model:
+the JBW name and icon on sign-in and in the app, no "Rakazo" text in the account menu or any
+settings tab, view-only members refused when they try to change the space but able to chat, an
+approval answered through the notification path (and refused for anyone but its owner), and
+pushes refused for any address that is not a public push service.
 
-Not yet tested on a real server: `setup.sh` / cloud-init (written to Rakazo's documented install
-steps, but it has never run on a Hetzner box), Telegram webhook registration, and Let's Encrypt
-certificates for the sslip.io hostname. If HTTPS fails, the fix is a real subdomain
-(e.g. `ops.<jbw-domain>.com` pointed at the server IP) and editing `/etc/caddy/Caddyfile`.
+Live in production: the server at `jbw.155-133-197-249.sslip.io` with HTTPS (Contabo).
+
+Not yet tested: a real push to a real phone (needs Task 9), Composio sign-in for the BTG Gmail
+(Task 8), and `setup.sh` from scratch on a fresh server (the live one was set up by Muse).
 
 ## Keeping the fork current
 
-The fork's branch `claude/loving-ride-r8uxm7` carries 3 small changes on top of upstream:
-theme name/icon support, the `fork-image` workflow, and a docs paragraph. Merge upstream weekly;
+The fork's branch `claude/loving-ride-r8uxm7` carries a few changes on top of upstream:
+theme name/icon and `INSTANCE_NAME` white-labeling, view-only space members, push approvals
+for the installed web app, the plugin-source token, and the `fork-image` workflow. Merge upstream weekly;
 each push rebuilds the image. On the server, pull the new image with
-`cd /opt/jbw/rakazo && bash install-images.sh`.
+`server/update-server.sh` (Task 5 in muse-instructions.md).
