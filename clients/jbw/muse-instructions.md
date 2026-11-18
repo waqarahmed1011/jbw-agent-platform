@@ -143,9 +143,16 @@ Rules: never put secrets in chat, notes or email. If a page looks different, sto
 Goal: an API key so the app can turn speech into text, read replies aloud and take calls
 (about $0.003 a minute to listen, about $0.015 a minute to speak).
 
-1. Go to https://platform.openai.com/api-keys signed in as me.
-2. If there's no billing set up, STOP and ask me before adding a card.
-3. Create a key named "jbw-voice". Keep it on screen for Task 8.
+Important: my main OpenAI organization shares data with OpenAI (that's how it gets free
+tokens). Voice hears Dad and the office, so this key must come from a SEPARATE organization
+with data sharing off.
+
+1. Go to https://platform.openai.com signed in as me. Use the organization switcher (top left)
+   to create a new organization named "JBW". If you can't create one, STOP and ask me.
+2. In the JBW organization: Settings, Data controls. Make sure sharing with OpenAI is OFF.
+3. If the JBW organization has no billing, STOP and ask me before adding a card.
+4. In the JBW organization, create an API key named "jbw-voice". Keep it on screen for Task 8.
+Never use a key from my main (sharing) organization for voice.
 
 Report back: "Voice key created" (not the key).
 Rules: ask me before paying. Never put the key in chat, notes or email.
@@ -182,6 +189,9 @@ A. Sign in as ME (operator account).
    1. Settings, Account: change my password; save the new one in the password manager.
    2. Settings, Models: add a Google Gemini connection and paste the Gemini key from Task 4.
       Default model: the newest "Flash" model. Approval model: the same Flash model.
+      Also add an OpenAI connection with a key from my MAIN OpenAI organization (the one with
+      free daily tokens; create a key named "jbw-public-only"). Do NOT make it the default and
+      do NOT pick it for any bot today. It is only for IDOT Watch later (public pages only).
    3. Settings, Approvals: Mode = Ask.
    4. Create two spaces (the + at the top of the sidebar, "New private space"):
       "BTG Construction" and "JBW Engineering".

@@ -12,7 +12,7 @@ Not one of the 3 paid pilots in the business plan.
 | Platform | Branded Rakazo fork, one instance, 2 spaces (BTG Construction, JBW Engineering) |
 | URL | `https://jbw.<server-ip-dashed>.sslip.io` until a real domain is set |
 | Channels | Installed web app (home screen icon, push approvals, voice), email |
-| Models | Gemini Flash (workers, approvals) + Gemini Pro (Chief), paid tier. Claude later |
+| Models | Gemini Flash (workers, approvals) + Gemini Pro (Chief), paid tier. OpenAI free tokens only for public-data bots. Claude later |
 
 ## Files
 
@@ -34,7 +34,8 @@ Not one of the 3 paid pilots in the business plan.
 |---|---|
 | Contabo Cloud VPS 4 (live server) | per the Contabo invoice |
 | Gemini API | $10 to $40, depending on email volume |
-| OpenAI voice (talk to type, spoken replies, calls) | about $3 to $8 |
+| OpenAI voice, separate org with data sharing off | about $3 to $8 |
+| OpenAI free daily tokens (IDOT Watch only, public data) | $0 within the daily limits |
 | Composio (Google connections) | free tier |
 | **Total** | **server plus about $15 to $50/mo** |
 

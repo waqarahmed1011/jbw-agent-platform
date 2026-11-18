@@ -12,7 +12,9 @@ Rules for every bot:
 - Approvals mode: **Ask**. Nothing gets sent, booked, paid or posted without a person tapping Allow.
 - Bots draft and prepare. A person sends anything that goes to IDOT, an owner, an inspector or a client.
 - No bot touches stamped or sealed engineering documents, or anything that needs a PE's judgment.
-- Model: the newest **Gemini Flash** for Inbox, Scheduler and Paperwork; **Gemini Pro** for Chief. Switch to Claude later in Settings, Models (no redeploy).
+- Model: the newest **Gemini Flash** (paid) for Inbox, Scheduler and Paperwork; **Gemini Pro** for Chief. Switch to Claude later in Settings, Models (no redeploy).
+- Free OpenAI tokens (the owner's data-sharing org) only for bots that never see client data: today that is **IDOT Watch** on **gpt-5.4-mini**. Anything that reads email, files, calendars or voice stays on a paid, non-sharing model.
+- Voice: OpenAI from a separate organization with data sharing off.
 
 Who owns what (matters because a bot uses the accounts of whoever runs it):
 
@@ -136,4 +138,5 @@ to-do list and drafts. Do not connect Gmail here until JBW has its own mailbox i
 ### IDOT Watch (add when IDOT work starts)
 
 Tracks IDOT letting dates and bulletins, and keeps a prequalification document checklist with
-expiry dates. Read-only on public IDOT pages; never submits anything.
+expiry dates. Read-only on public IDOT pages; never submits anything. Model: gpt-5.4-mini on the
+"OpenAI (public data only)" connection. Give it no Gmail, Drive or Calendar access.
