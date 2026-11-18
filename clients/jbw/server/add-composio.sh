@@ -12,5 +12,5 @@ echo
 set_env COMPOSIO_API_KEY "$KEY"
 unset KEY
 
-bash install-images.sh
+run_install
 echo "Composio added. In the app: Settings, Integrations, Gmail, Connect."

@@ -23,5 +23,5 @@ CONTACT=${OPERATOR_EMAIL:-$(grep -m1 -oE '[^[:space:]]+@[^[:space:]]+' /root/jbw
 set_env INSTANCE_NAME JBW
 ensure_push_keys "$CONTACT"
 
-bash install-images.sh
+run_install
 echo "Updated: $(cat /root/jbw-url.txt 2>/dev/null || echo 'the JBW platform')"

@@ -24,3 +24,12 @@ ensure_push_keys() {
   set_env WEB_PUSH_CONTACT "mailto:$1"
   rm -f "$pem"
 }
+
+# Reinstalls from the JBW fork's compose files, which pass the JBW settings to the app.
+# Upstream's files (the installer's default) drop INSTANCE_NAME and the push keys.
+run_install() {
+  export RAKAZO_DOWNLOAD_BASE="https://raw.githubusercontent.com/waqarahmed1011/rakazo/claude/loving-ride-r8uxm7/infra/compose"
+  curl -fsSL "$RAKAZO_DOWNLOAD_BASE/install-images.sh" -o install-images.sh
+  curl -fsSL "$RAKAZO_DOWNLOAD_BASE/docker-compose.images.yml" -o docker-compose.images.yml
+  bash install-images.sh
+}
