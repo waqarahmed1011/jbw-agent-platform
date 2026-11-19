@@ -13,6 +13,8 @@ Rules for every bot:
 - Bots draft and prepare. A person sends anything that goes to IDOT, an owner, an inspector or a client.
 - No bot touches stamped or sealed engineering documents, or anything that needs a PE's judgment.
 - Model: the newest **Gemini Flash** (paid) for Inbox, Scheduler and Paperwork; **Gemini Pro** for Chief. Switch to Claude later in Settings, Models (no redeploy).
+- Backup model for Chief, Inbox, Scheduler and Paperwork: OpenAI from the separate JBW organization (data sharing off), used when Gemini returns a broken response or is unavailable.
+- Free tiers (Groq, Gemini free, OpenRouter free) are for public-data bots only. Gemini free, OpenAI free tokens and rotating free models may log or train on prompts. DeepSeek and Z.AI are China-hosted: no client data.
 - Free OpenAI tokens (the owner's data-sharing org) only for bots that never see client data: today that is **IDOT Watch** on **gpt-5.4-mini**. Anything that reads email, files, calendars or voice stays on a paid, non-sharing model.
 - Voice: OpenAI from a separate organization with data sharing off.
 

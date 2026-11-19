@@ -36,6 +36,7 @@ Not one of the 3 paid pilots in the business plan.
 | Gemini API | $10 to $40, depending on email volume |
 | OpenAI voice, separate org with data sharing off | about $3 to $8 |
 | OpenAI free daily tokens (IDOT Watch only, public data) | $0 within the daily limits |
+| OpenAI backup model (JBW org, only used when Gemini fails) | a few dollars |
 | Composio (Google connections) | free tier |
 | **Total** | **server plus about $15 to $50/mo** |
 

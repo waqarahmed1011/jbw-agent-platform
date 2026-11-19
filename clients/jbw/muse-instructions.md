@@ -189,10 +189,16 @@ Use the platform URL from Task 2 and the passwords from my password manager (Tas
 A. Sign in as ME (operator account).
    1. Settings, Account: change my password; save the new one in the password manager.
    2. Settings, Models: add a Google Gemini connection and paste the Gemini key from Task 4.
-      Default model: the newest "Flash" model. Approval model: the same Flash model.
+      Default model: the newest STABLE "Flash" model (not a preview or "Hydrogen"-style
+      model; previews returned broken responses). Approval model: the same Flash model.
       Also add an OpenAI connection with a key from my MAIN OpenAI organization (the one with
       free daily tokens; create a key named "jbw-public-only"). Do NOT make it the default and
       do NOT pick it for any bot today. It is only for IDOT Watch later (public pages only).
+      Then add a THIRD connection: OpenAI with a key from the separate "JBW" organization
+      (data sharing off, the same org as the voice key; create a second key there named
+      "jbw-backup"). Label it "OpenAI (backup)". In Settings, Models, set it as the BACKUP model
+      for Chief, Inbox, Scheduler and Paperwork (a mid-priced OpenAI chat model, not the
+      cheapest). Never use the "public data only" connection as a backup for these bots.
    3. Settings, Approvals: Mode = Ask.
    4. Create two spaces (the + at the top of the sidebar, "New private space"):
       "BTG Construction" and "JBW Engineering".
