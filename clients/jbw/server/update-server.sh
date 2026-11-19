@@ -21,6 +21,8 @@ CONTACT=${OPERATOR_EMAIL:-$(grep -m1 -oE '[^[:space:]]+@[^[:space:]]+' /root/jbw
 [[ -n "$CONTACT" ]] || { echo "STOP: no operator email found. Report this."; exit 1; }
 
 set_env INSTANCE_NAME JBW
+# Shows the hold-to-talk mic and the Call button (they need a voice provider in Settings, Voice).
+set_env PHONE_CALLS_ENABLED true
 ensure_push_keys "$CONTACT"
 
 run_install

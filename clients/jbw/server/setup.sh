@@ -60,6 +60,8 @@ set_env API_URL "https://${HOST}"
 set_env SIGNUPS_ENABLED false
 set_env RAKAZO_THEME /theme/theme.json
 set_env INSTANCE_NAME JBW
+# Shows the hold-to-talk mic and the Call button (they need a voice provider in Settings, Voice).
+set_env PHONE_CALLS_ENABLED true
 ensure_push_keys "$OPERATOR_EMAIL"
 
 bash install-images.sh

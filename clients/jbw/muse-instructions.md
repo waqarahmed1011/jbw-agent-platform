@@ -213,6 +213,8 @@ B. Sign out. Sign in as DAD.
    1. Change his password; save it. Open both invite links meant for Dad and click Join.
    2. Settings, Models: add the same Gemini key. Settings, Approvals: Ask.
    3. Settings, Voice: provider OpenAI, paste the voice key from Task 6.
+      Then test: hold the mic next to the message box and speak (it should type your words),
+      and press Call at the top right of a bot's chat for a spoken conversation.
 
 C. Sign out. Sign in as the OFFICE ADMIN.
    1. Change the password; save it. Open both invite links meant for the admin and Join.
