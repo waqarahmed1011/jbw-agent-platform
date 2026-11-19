@@ -166,9 +166,10 @@ Rules: ask me before paying. Never put the key in chat, notes or email.
 Goal: let the platform connect Google accounts through Composio, which is already approved by
 Google (our own Google app would log everyone out every 7 days).
 
-1. Go to https://composio.dev and sign up with my email. Choose the free plan.
-   If it asks for a card or a paid plan, STOP and ask me.
-2. In the Composio dashboard, open Settings, API Keys, and create a key named "jbw-platform".
+1. Go to https://platform.composio.dev (the developer platform, NOT dashboard.composio.dev)
+   and sign in with my email. Choose the free plan. If it asks for a card, STOP and ask me.
+2. Create a project "jbw-platform", then Settings, API Keys: create a key with WRITE access
+   (session_management must be write). A key starting with "ck_" is the wrong kind.
 3. In the server console (as in Task 5), type:  bash /opt/jbw/add-composio.sh
    Paste the key when asked and press Enter (nothing shows while pasting; that's normal).
 4. Wait for "Composio added."
