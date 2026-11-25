@@ -5,8 +5,10 @@ questions, then builds one tight, single-job bot with the right model, routine a
 
 Set up once, in the space where the new bots should live (BTG Construction first):
 
-1. **Skill:** Skills (sidebar footer) > New skill. Name `design-bot`, description
-   `Rubric and checklist for designing single-job bots`, body = the "Skill" section below.
+1. **Skill:** Skills (sidebar footer) > New skill. Delete everything in the box, then paste
+   only what is inside the code block under "Skill" below (from the first `---` to the end).
+   The three lines between the `---` marks are the skill's name and description; without
+   them the app refuses to save.
 2. **Bot:** + > New bot. Name `Bot Designer`, description `Designs and creates single-job bots`,
    instructions = the "Instructions" section below. Model: Gemini Pro (main), Flash fallback.
 3. Test: "I spend an hour a day chasing subs for insurance certificates. Make me a bot for it."
@@ -47,6 +49,11 @@ Rules:
 ## Skill
 
 ```markdown
+---
+name: design-bot
+description: Rubric and checklist for designing single-job bots. Use before creating or editing any bot.
+---
+
 # design-bot
 
 Use this rubric for every bot you design. A bot that fails a check gets redesigned, not shipped.
