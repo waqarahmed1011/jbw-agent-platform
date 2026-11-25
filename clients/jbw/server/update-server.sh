@@ -25,6 +25,8 @@ set_env INSTANCE_NAME JBW
 set_env PHONE_CALLS_ENABLED true
 # The ticket Board: bots propose work as offer cards and pick up approved tickets.
 set_env TICKET_BOARD_ENABLED true
+# A reply stops after 25 tool calls instead of running on (unset means unlimited).
+set_env MAX_TOOL_CALLS_PER_TURN 25
 ensure_push_keys "$CONTACT"
 
 run_install
