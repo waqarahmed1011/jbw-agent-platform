@@ -23,6 +23,8 @@ CONTACT=${OPERATOR_EMAIL:-$(grep -m1 -oE '[^[:space:]]+@[^[:space:]]+' /root/jbw
 set_env INSTANCE_NAME JBW
 # Shows the hold-to-talk mic and the Call button (they need a voice provider in Settings, Voice).
 set_env PHONE_CALLS_ENABLED true
+# The ticket Board: bots propose work as offer cards and pick up approved tickets.
+set_env TICKET_BOARD_ENABLED true
 ensure_push_keys "$CONTACT"
 
 run_install
