@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Sets up the JBW agent platform on a fresh Hetzner Ubuntu 24.04 server.
+# Sets up the JBW agent platform on a fresh Ubuntu 24.04 server (any provider).
 # Runs once from cloud-init as root. Log: /var/log/jbw-setup.log
 # Result: https://jbw.<server-ip-with-dashes>.sslip.io, accounts in /root/jbw-accounts.txt
 set -euo pipefail
@@ -14,7 +14,8 @@ FORK_RAW="https://raw.githubusercontent.com/waqarahmed1011/rakazo/claude/loving-
 APP_IMAGE="ghcr.io/waqarahmed1011/rakazo/app"
 APP_TAG="clients"
 
-IP=$(curl -fsS http://169.254.169.254/hetzner/v1/metadata/public-ipv4)
+# The address of the default route; on a VPS that is the public IPv4.
+IP=$(ip -4 route get 1.1.1.1 | awk '{for (i = 1; i < NF; i++) if ($i == "src") print $(i + 1)}')
 HOST="jbw.${IP//./-}.sslip.io"
 echo "Setting up ${HOST}"
 
@@ -42,14 +43,8 @@ export RAKAZO_DOWNLOAD_BASE="$FORK_RAW"
 curl -fsSLO "$FORK_RAW/install-images.sh"
 bash install-images.sh --prepare-only
 
-set_env() {
-  local key=$1 value=$2
-  if grep -qE "^[#[:space:]]*${key}=" .env; then
-    sed -i -E "s|^[#[:space:]]*${key}=.*|${key}=${value}|" .env
-  else
-    echo "${key}=${value}" >> .env
-  fi
-}
+# shellcheck disable=SC1091
+source /opt/jbw/lib-env.sh
 
 # Use the JBW fork image; fall back to upstream if the fork image hasn't been published yet.
 if docker manifest inspect "${APP_IMAGE}:${APP_TAG}" > /dev/null 2>&1; then
@@ -64,6 +59,14 @@ set_env WEB_ORIGIN "https://${HOST}"
 set_env API_URL "https://${HOST}"
 set_env SIGNUPS_ENABLED false
 set_env RAKAZO_THEME /theme/theme.json
+set_env INSTANCE_NAME JBW
+# Shows the hold-to-talk mic and the Call button (they need a voice provider in Settings, Voice).
+set_env PHONE_CALLS_ENABLED true
+# The ticket Board: bots propose work as offer cards and pick up approved tickets.
+set_env TICKET_BOARD_ENABLED true
+# A reply stops after 25 tool calls instead of running on (unset means unlimited).
+set_env MAX_TOOL_CALLS_PER_TURN 25
+ensure_push_keys "$OPERATOR_EMAIL"
 
 bash install-images.sh
 

@@ -32,7 +32,7 @@ write_files:
     permissions: '0700'
     content: |
       #!/usr/bin/env bash
-      # Sets up the JBW agent platform on a fresh Hetzner Ubuntu 24.04 server.
+      # Sets up the JBW agent platform on a fresh Ubuntu 24.04 server (any provider).
       # Runs once from cloud-init as root. Log: /var/log/jbw-setup.log
       # Result: https://jbw.<server-ip-with-dashes>.sslip.io, accounts in /root/jbw-accounts.txt
       set -euo pipefail
@@ -47,7 +47,8 @@ write_files:
       APP_IMAGE="ghcr.io/waqarahmed1011/rakazo/app"
       APP_TAG="clients"
 
-      IP=$(curl -fsS http://169.254.169.254/hetzner/v1/metadata/public-ipv4)
+      # The address of the default route; on a VPS that is the public IPv4.
+      IP=$(ip -4 route get 1.1.1.1 | awk '{for (i = 1; i < NF; i++) if ($i == "src") print $(i + 1)}')
       HOST="jbw.${IP//./-}.sslip.io"
       echo "Setting up ${HOST}"
 
@@ -75,14 +76,8 @@ write_files:
       curl -fsSLO "$FORK_RAW/install-images.sh"
       bash install-images.sh --prepare-only
 
-      set_env() {
-        local key=$1 value=$2
-        if grep -qE "^[#[:space:]]*${key}=" .env; then
-          sed -i -E "s|^[#[:space:]]*${key}=.*|${key}=${value}|" .env
-        else
-          echo "${key}=${value}" >> .env
-        fi
-      }
+      # shellcheck disable=SC1091
+      source /opt/jbw/lib-env.sh
 
       # Use the JBW fork image; fall back to upstream if the fork image hasn't been published yet.
       if docker manifest inspect "${APP_IMAGE}:${APP_TAG}" > /dev/null 2>&1; then
@@ -97,6 +92,14 @@ write_files:
       set_env API_URL "https://${HOST}"
       set_env SIGNUPS_ENABLED false
       set_env RAKAZO_THEME /theme/theme.json
+      set_env INSTANCE_NAME JBW
+      # Shows the hold-to-talk mic and the Call button (they need a voice provider in Settings, Voice).
+      set_env PHONE_CALLS_ENABLED true
+      # The ticket Board: bots propose work as offer cards and pick up approved tickets.
+      set_env TICKET_BOARD_ENABLED true
+      # A reply stops after 25 tool calls instead of running on (unset means unlimited).
+      set_env MAX_TOOL_CALLS_PER_TURN 25
+      ensure_push_keys "$OPERATOR_EMAIL"
 
       bash install-images.sh
 
@@ -125,19 +128,10 @@ write_files:
 
       echo "https://${HOST}" > /root/jbw-url.txt
       echo "DONE: https://${HOST}"
-  - path: /opt/jbw/add-telegram.sh
-    permissions: '0700'
+  - path: /opt/jbw/lib-env.sh
+    permissions: '0644'
     content: |
-      #!/usr/bin/env bash
-      # Adds the Telegram bot token to the server without it ever appearing on screen or in chat.
-      # Run in the Hetzner web console as root:  bash /opt/jbw/add-telegram.sh
-      set -euo pipefail
-      cd /opt/jbw/rakazo
-
-      read -r -s -p "Paste the Telegram bot token, then press Enter: " TOKEN
-      echo
-      [[ "$TOKEN" =~ ^[0-9]+:[A-Za-z0-9_-]+$ ]] || { echo "That doesn't look like a BotFather token."; exit 1; }
-
+      # Shared by the JBW server scripts: edit one KEY=value line in the platform's .env.
       set_env() {
         local key=$1 value=$2
         if grep -qE "^[#[:space:]]*${key}=" .env; then
@@ -146,11 +140,50 @@ write_files:
           echo "${key}=${value}" >> .env
         fi
       }
-      set_env TELEGRAM_BOT_TOKEN "$TOKEN"
-      set_env TELEGRAM_WEBHOOK_SECRET_TOKEN "$(openssl rand -hex 32)"
-      unset TOKEN
 
-      bash install-images.sh
-      echo "Telegram added. In the app: Settings, Messaging, pick a bot, Connect a chat app, telegram."
+      env_value() {
+        grep -E "^${1}=" .env | tail -1 | cut -d= -f2-
+      }
+
+      # Web Push keys (P-256): the public key goes to browsers, the private key stays here.
+      ensure_push_keys() {
+        [[ -n "$(env_value WEB_PUSH_PRIVATE_KEY)" ]] && return 0
+        local pem
+        pem=$(mktemp)
+        openssl ecparam -name prime256v1 -genkey -noout -out "$pem"
+        local b64url='base64 -w0 | tr "+/" "-_" | tr -d "="'
+        set_env WEB_PUSH_PRIVATE_KEY "$(openssl ec -in "$pem" -outform DER 2>/dev/null | tail -c +8 | head -c 32 | eval "$b64url")"
+        set_env WEB_PUSH_PUBLIC_KEY "$(openssl ec -in "$pem" -pubout -outform DER 2>/dev/null | tail -c 65 | eval "$b64url")"
+        set_env WEB_PUSH_CONTACT "mailto:$1"
+        rm -f "$pem"
+      }
+
+      # Reinstalls from the JBW fork's compose files, which pass the JBW settings to the app.
+      # Upstream's files (the installer's default) drop INSTANCE_NAME and the push keys.
+      run_install() {
+        export RAKAZO_DOWNLOAD_BASE="https://raw.githubusercontent.com/waqarahmed1011/rakazo/claude/loving-ride-r8uxm7/infra/compose"
+        curl -fsSL "$RAKAZO_DOWNLOAD_BASE/install-images.sh" -o install-images.sh
+        curl -fsSL "$RAKAZO_DOWNLOAD_BASE/docker-compose.images.yml" -o docker-compose.images.yml
+        bash install-images.sh
+      }
+  - path: /opt/jbw/add-composio.sh
+    permissions: '0700'
+    content: |
+      #!/usr/bin/env bash
+      # Adds the Composio API key (Gmail, Calendar, Drive and Sheets connections) without it ever
+      # appearing on screen or in chat. Run as root in the server console:  bash /opt/jbw/add-composio.sh
+      set -euo pipefail
+      cd /opt/jbw/rakazo
+      # shellcheck disable=SC1091
+      source /opt/jbw/lib-env.sh
+
+      read -r -s -p "Paste the Composio API key, then press Enter: " KEY
+      echo
+      [[ ${#KEY} -ge 16 && "$KEY" =~ ^[A-Za-z0-9_-]+$ ]] || { echo "That doesn't look like a Composio API key."; exit 1; }
+      set_env COMPOSIO_API_KEY "$KEY"
+      unset KEY
+
+      run_install
+      echo "Composio added. In the app: Settings, Integrations, Gmail, Connect."
 runcmd:
   - [bash, /opt/jbw/setup.sh]

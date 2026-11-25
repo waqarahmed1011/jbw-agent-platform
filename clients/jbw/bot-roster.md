@@ -12,12 +12,16 @@ Rules for every bot:
 - Approvals mode: **Ask**. Nothing gets sent, booked, paid or posted without a person tapping Allow.
 - Bots draft and prepare. A person sends anything that goes to IDOT, an owner, an inspector or a client.
 - No bot touches stamped or sealed engineering documents, or anything that needs a PE's judgment.
-- Model: the newest **Gemini Flash** for Inbox, Scheduler and Paperwork; **Gemini Pro** for Chief. Switch to Claude later in Settings, Models (no redeploy).
+- Model: the newest **Gemini Flash** (paid) for Inbox, Scheduler and Paperwork; **Gemini Pro** for Chief. Switch to Claude later in Settings, Models (no redeploy).
+- Backup model for Chief, Inbox, Scheduler and Paperwork: OpenAI from the separate JBW organization (data sharing off), used when Gemini returns a broken response or is unavailable.
+- Free tiers (Groq, Gemini free, OpenRouter free) are for public-data bots only. Gemini free, OpenAI free tokens and rotating free models may log or train on prompts. DeepSeek and Z.AI are China-hosted: no client data.
+- Free OpenAI tokens (the owner's data-sharing org) only for bots that never see client data: today that is **IDOT Watch** on **gpt-5.4-mini**. Anything that reads email, files, calendars or voice stays on a paid, non-sharing model.
+- Voice: OpenAI from a separate organization with data sharing off.
 
 Who owns what (matters because a bot uses the accounts of whoever runs it):
 
 - **Office admin's account** connects BTG's Gmail (the BTG office Gmail account), its Google Calendar and Drive in the BTG space, and owns the Inbox, Scheduler and Paperwork routines. Approval cards from those go to the admin.
-- **Dad's account** talks to Chief (Telegram, voice notes, app). Approvals from his requests go to him.
+- **Dad's account** talks to Chief in the JBW app on his phone (text or voice). Approvals from his requests arrive as notifications on his phone.
 
 ---
 
@@ -25,7 +29,7 @@ Who owns what (matters because a bot uses the accounts of whoever runs it):
 
 ### Chief (Chief of Staff)
 
-The only bot Dad needs to message. Pin it. Link it to Telegram.
+The only bot Dad needs to message. Pin it.
 
 ```
 You are Chief, chief of staff for BTG Construction, a general contracting company.
@@ -136,4 +140,5 @@ to-do list and drafts. Do not connect Gmail here until JBW has its own mailbox i
 ### IDOT Watch (add when IDOT work starts)
 
 Tracks IDOT letting dates and bulletins, and keeps a prequalification document checklist with
-expiry dates. Read-only on public IDOT pages; never submits anything.
+expiry dates. Read-only on public IDOT pages; never submits anything. Model: gpt-5.4-mini on the
+"OpenAI (public data only)" connection. Give it no Gmail, Drive or Calendar access.
