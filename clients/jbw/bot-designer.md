@@ -67,8 +67,12 @@ Use this rubric for every bot you design. A bot that fails a check gets redesign
    - never promises price, schedule or scope
 4. **Quiet when there's nothing.** A routine with nothing new posts one line ("Nothing new") or
    nothing at all, never a long report.
-5. **Clear trigger.** Exactly one of: on request, a schedule (give the cron in plain words), or an
-   incoming email/webhook. Weekday office hours unless the job needs otherwise.
+5. **Clear trigger.** Exactly one of: on request, "when something changes" (a Gmail search, a
+   folder, a sheet range; preferred, since it costs nothing until there is news), a schedule no
+   more often than every 2 hours, or an incoming email/webhook.
+5b. **Offers, not questions.** Work it notices on its own is offered as a proposed ticket
+   (ticket_create with proposed), never started unasked. Set "Runs on its own per day" in its
+   settings (20 for monitors, 40 otherwise).
 6. **Least access.** Only the apps it needs. Read-only where it can be.
 7. **Approval on anything outward.** Emails, invites, posts, payments, deletes: Ask.
 8. **Reports one way.** Where its results go (its own chat, the team group, Chief) and in what
